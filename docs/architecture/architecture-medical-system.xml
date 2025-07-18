@@ -1,0 +1,63 @@
+# Create a simple draw.io architecture diagram in XML format for the described system
+
+architecture_diagram_xml = """<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Medical Appointment System Architecture" id="architecture-diagram">
+    <mxGraphModel dx="1162" dy="710" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Frontend -->
+        <mxCell id="2" value="Web Frontend (React/Next.js)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="40" width="180" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- API Gateway -->
+        <mxCell id="3" value="API Gateway (Express.js + TS + Swagger)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="280" y="130" width="180" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Authentication -->
+        <mxCell id="4" value="Auth Service (Passport.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;" vertex="1" parent="1">
+          <mxGeometry x="60" y="230" width="180" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Database -->
+        <mxCell id="5" value="Database (MongoDB)" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;" vertex="1" parent="1">
+          <mxGeometry x="280" y="230" width="180" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Notification -->
+        <mxCell id="6" value="Notification Service (WhatsApp API)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="500" y="230" width="200" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Stripe -->
+        <mxCell id="7" value="Payment Gateway (Stripe)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;" vertex="1" parent="1">
+          <mxGeometry x="280" y="320" width="180" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Arrows -->
+        <mxCell id="8" style="endArrow=block;html=1;" edge="1" parent="1" source="2" target="3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="9" style="endArrow=block;html=1;" edge="1" parent="1" source="3" target="4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="10" style="endArrow=block;html=1;" edge="1" parent="1" source="3" target="5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" style="endArrow=block;html=1;" edge="1" parent="1" source="3" target="6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="12" style="endArrow=block;html=1;" edge="1" parent="1" source="5" target="7">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
+
+
