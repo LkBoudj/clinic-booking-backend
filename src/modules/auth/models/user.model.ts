@@ -14,8 +14,8 @@ export interface IUser {
   password: string;
   phone?: string;
   roles?: Types.ObjectId[];
+  permissions?: Types.ObjectId[];
   gender?: EGender;
-  role: Types.ObjectId;
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
@@ -55,10 +55,18 @@ const userSchema = new Schema<IUserDoc>(
       required: true,
       select: false,
     },
-    roles: {
-      type: Schema.Types.ObjectId,
-      ref: "roles",
-    },
+    roles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Role",
+      },
+    ],
+    permissions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Permission",
+      },
+    ],
     avatar: {
       type: String,
     },
@@ -69,10 +77,6 @@ const userSchema = new Schema<IUserDoc>(
       type: String,
       enum: Object.values(EGender),
       default: EGender.M,
-    },
-    role: {
-      type: Schema.Types.ObjectId,
-      ref: "Role",
     },
     is_active: {
       type: Boolean,

@@ -2,6 +2,7 @@ import { Document, model, Schema, Types } from "mongoose";
 export interface IRole {
   name: string;
   users?: Types.ObjectId[];
+  permissions?: Types.ObjectId[];
 }
 
 export type IRoleDoc = IRole & Document;
@@ -15,7 +16,13 @@ const roleSchema = new Schema<IRoleDoc>({
   users: [
     {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
+    },
+  ],
+  permissions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Permission",
     },
   ],
 });

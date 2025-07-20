@@ -1,24 +1,45 @@
+// src/core/ability/defineAbility.ts
 import {
   AbilityBuilder,
   createMongoAbility,
   MongoAbility,
 } from "@casl/ability";
-import type { Actions, Subjects } from "../../config/casl.config";
+import { AppRole, rolePermissions } from "../../config/permissions.config";
 
-export type AppAbility = MongoAbility<[Actions, Subjects]>;
+type Action = "manage" | "create" | "read" | "update" | "delete";
+type Subject = string | "all";
 
-export function defineAbilitiesFor(role: string, userId?: string): AppAbility {
-  const { can, cannot, build } = new AbilityBuilder<AppAbility>(
-    createMongoAbility
-  );
+interface Permission {
+  action: Action;
+  subject: Subject;
+}
 
-  if (role === "admin") {
+export default function defineAbilityFor(roles: AppRole | AppRole[]) {
+  const { can, build } = new AbilityBuilder(createMongoAbility);
+
+  const assignedRoles = Array.isArray(roles) ? roles : [roles];
+
+  // Grant full access if the user has "admin" role
+  if (assignedRoles.includes("admin")) {
     can("manage", "all");
   } else {
-    can("read", "Post");
-    can("update", "Post", { authorId: userId });
-    cannot("delete", "Post");
+    const aggregatedPermissions = new Set<string>();
+
+    assignedRoles.forEach((role) => {
+      const permissions = rolePermissions[role] || [];
+      permissions.forEach(({ action, subject, options }) => {
+        const key = `${action}:${subject}`;
+
+        if (!aggregatedPermissions.has(key)) {
+          can(action as Action, subject as Subject);
+          aggregatedPermissions.add(key);
+        }
+      });
+    });
   }
 
-  return build();
+  return build({
+    detectSubjectType: (object: any) =>
+      object?.__type || object?.type || object?.constructor?.name,
+  });
 }

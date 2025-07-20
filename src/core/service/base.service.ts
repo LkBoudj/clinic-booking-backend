@@ -23,7 +23,7 @@ class BaseService<T extends Document> extends RootService<T> {
    *
    * @returns Promise<Array<T> | { data: Array<T>, meta: PaginationMeta }>
    */
-  async list(): Promise<Document<T>[] | IPaginatedResult<Document<T>>> {
+  async list(): Promise<Partial<T>[] | IPaginatedResult<Partial<T>>> {
     let result;
     let query: any = this.model.find(this._filter, this._select, this._options);
 
@@ -159,7 +159,7 @@ class BaseService<T extends Document> extends RootService<T> {
    *
    * @returns Promise<T | null>
    */
-  async findOne(): Promise<Document<T> | null> {
+  async findOne(): Promise<Partial<T> | null> {
     let query: any = this.model.findOne(
       this._filter,
       this._select,

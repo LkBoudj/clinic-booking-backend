@@ -2,20 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import BaseController from "../../../core/controller/base.controller";
 import userService from "../services/user.service";
 import { IUserDoc } from "../models/user.model";
-import { signAccess } from "../../../utils/jwt.utils";
+import BaseService from "../../../core/service/base.service";
 
-class UserController extends BaseController<IUserDoc, typeof userService> {
-  login = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const user = req.user as IUserDoc;
-
-      const token = await signAccess({ id: user._id, email: user.email });
-
-      res.json({ token });
-    } catch (e) {
-      next(e);
-    }
-  };
+class UserController extends BaseController<IUserDoc, BaseService<IUserDoc>> {
+  constructor(service: BaseService<IUserDoc>) {
+    super(service);
+    service.populate("roles");
+  }
 }
 
 export default new UserController(userService);

@@ -5,6 +5,7 @@ export const baseUserSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
   avatar: z.string().optional(),
+
   email: z.email("Invalid email address").refine(
     async (email) => {
       const isExist = await UserModel.findByEmail(email);
@@ -17,7 +18,7 @@ export const baseUserSchema = z.object({
   // email: z.email("Invalid email address"),
   phone: z.string().optional(),
   gender: z.enum(Object.values(EGender)).optional(),
-  role: z
+  roles: z
     .array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid role ID"))
     .optional(), // MongoDB ObjectId
   is_active: z.boolean().optional(),
