@@ -1,0 +1,7 @@
+import BaseController from "../../../core/controller/base.controller";
+import nameService from "../services/name.service";
+import { INameDoc } from "../models/name.model";
+
+class NameController extends BaseController<INameDoc, typeof nameService> {}
+
+export default new NameController(nameService);

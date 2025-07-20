@@ -6,7 +6,7 @@ import {
   QueryOptions,
 } from "mongoose";
 import { IPaginatedResult } from "../../types";
-import { Env } from "../../config/env.config";
+import { EMODE, Env } from "../../config/env.config";
 
 /**
  * Abstract base service class providing reusable query functionality
@@ -56,7 +56,7 @@ export default abstract class RootService<T extends Document> {
     this._is_paginate = false;
     this._options = {};
 
-    if (Env.NODE_ENV === "dev") {
+    if (Env.NODE_ENV === EMODE.DEV) {
       console.log("BaseService: State has been reset.");
     }
   }

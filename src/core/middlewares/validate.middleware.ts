@@ -41,7 +41,6 @@ const validate =
       }
       next();
     } catch (error) {
-      console.log({ error });
       if (error instanceof z.ZodError) {
         return next(
           new ValidationError("Validation failed", formatZodErrors(error))

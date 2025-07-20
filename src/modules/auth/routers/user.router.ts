@@ -1,14 +1,28 @@
 import { Router } from "express";
-import userController from "../modules/auth/controllers/user.controller";
-import validate from "../core/middlewares/validate.middleware";
-import { querySchema } from "../core/validation/query.validation";
+import userController from "../controllers/user.controller";
+import validate from "../../../core/middlewares/validate.middleware";
+import {
+  storeUserSchema,
+  updateUserSchema,
+} from "../validation/user.validation";
+import {
+  handelMiddleware,
+  upload,
+} from "../../../core/middlewares/upload.middleware";
 
-const router = Router();
+import authenticateJWT from "../../../core/middlewares/authenticateJWT.middleware";
+
+const router = Router().use(authenticateJWT);
 
 router.get("/", userController.list);
-
 router.get("/:id", userController.findById);
-router.post("/", userController.create);
-router.put("/:id", userController.update);
+router.post(
+  "/",
+  upload.single("avatar"),
+  handelMiddleware("avatar"),
+  validate({ body: storeUserSchema }),
+  userController.create
+);
+router.put("/:id", validate({ body: updateUserSchema }), userController.update);
 router.delete("/:id", userController.delete);
 export default router;

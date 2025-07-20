@@ -2,16 +2,14 @@ import { createServer } from "http";
 import app from "./app";
 import { Env } from "./config/env.config";
 
-import { connectToDatabase } from "./config/db";
-
 import logger from "./lib/logger";
+import { connectToDatabase } from "./config/db.config";
 
 const server = createServer(app);
 
 const PORT = Env.PORT;
 const HOST = Env.HOST;
 
-console.log("____________BEFORE RUN _____________");
 connectToDatabase()
   .then(() => {
     server.listen(PORT, () => {

@@ -42,6 +42,7 @@ export default class BaseController<
    *
    * @response 200: JSON array of resource documents
    */
+
   list = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { page, limit, search, ...restQuery } =
@@ -76,10 +77,11 @@ export default class BaseController<
    * @response 200: JSON resource document
    * @response 404: Resource not found
    */
-  async findById(req: Request, res: Response, next: NextFunction) {
+  findById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
       const resource = await this.service.findById(id);
+      sendSuccess({ res, data: resource });
 
       if (!resource) {
         throw new NotFoundError("Resource not found");
@@ -89,7 +91,7 @@ export default class BaseController<
     } catch (e) {
       next(e);
     }
-  }
+  };
 
   /**
    * @function create
@@ -98,16 +100,17 @@ export default class BaseController<
    * @request body: object (resource data)
    * @response 201: JSON of the newly created resource
    */
-  async create(req: Request, res: Response, next: NextFunction) {
+  create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const payload = req.validated?.body ?? req.body;
+
       const model = await this.service.create(payload);
 
       sendSuccess({ res, data: model });
     } catch (e) {
       next(e);
     }
-  }
+  };
 
   /**
    * @function update
@@ -120,7 +123,7 @@ export default class BaseController<
    * @response 200: JSON of the updated resource
    * @response 404: Resource not found
    */
-  async update(req: Request, res: Response, next: NextFunction) {
+  update = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
 
@@ -137,7 +140,7 @@ export default class BaseController<
     } catch (e) {
       next(e);
     }
-  }
+  };
 
   /**
    * @function delete
@@ -149,7 +152,7 @@ export default class BaseController<
    * @response 204: No content (successful deletion)
    * @response 404: Resource not found
    */
-  async delete(req: Request, res: Response, next: NextFunction) {
+  delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
       const result = await this.service.delete(id);
@@ -157,5 +160,5 @@ export default class BaseController<
     } catch (e) {
       next(e);
     }
-  }
+  };
 }

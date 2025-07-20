@@ -8,10 +8,13 @@ import express from "express";
 import path from "path";
 import errorHandler from "./core/middlewares/error.middleware";
 import rootRouter from "./routers";
+import passport from "./config/passport.config";
 
 dotenv.config();
 
 const app = express();
+
+// app.use(mongoSanitize());
 
 app.use(helmet());
 app.use(hpp());
@@ -19,7 +22,7 @@ app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
-
+app.use(passport.initialize());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 دقيقة
   max: 100, // حد أقصى لكل IP

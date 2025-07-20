@@ -1,6 +1,7 @@
 import z from "zod";
 
 export function formatZodErrors(e: z.ZodError) {
+  return z.flattenError(e);
   return e.issues.reduce((errors: any, issue) => {
     const path = issue.path.join(".");
     if (!errors[path]) {

@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import BaseController from "../../../core/controller/base.controller";
-import userService from "../services/user.service";
 import { IUserDoc } from "../models/user.model";
 import { signAccess } from "../../../utils/jwt.utils";
 
-class UserController extends BaseController<IUserDoc, typeof userService> {
+class AuthController {
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as IUserDoc;
@@ -18,4 +16,4 @@ class UserController extends BaseController<IUserDoc, typeof userService> {
   };
 }
 
-export default new UserController(userService);
+export default new AuthController();

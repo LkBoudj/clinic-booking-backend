@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema, Types } from "mongoose";
+import { Document, Model, model, Query, Schema, Types } from "mongoose";
 import { comparePassword, hashPassword } from "../../../utils/security.utils";
 
 export enum EGender {
@@ -9,9 +9,11 @@ export enum EGender {
 export interface IUser {
   first_name: string;
   last_name: string;
+  avatar?: string;
   email: string;
   password: string;
   phone?: string;
+  roles?: Types.ObjectId[];
   gender?: EGender;
   role: Types.ObjectId;
   is_active: boolean;
@@ -19,10 +21,12 @@ export interface IUser {
   updated_at: Date;
 }
 
-export type IUserDoc = IUser & Document;
+export interface IUserDoc extends IUser, Document {
+  checkPassword(candidate: string): Promise<boolean>;
+}
 
 export interface IUserModel extends Model<IUserDoc> {
-  findByEmail(email: string): Promise<IUserDoc | null>;
+  findByEmail(email: string): Query<IUserDoc | null, IUserDoc>;
 }
 
 const userSchema = new Schema<IUserDoc>(
@@ -50,6 +54,13 @@ const userSchema = new Schema<IUserDoc>(
       type: String,
       required: true,
       select: false,
+    },
+    roles: {
+      type: Schema.Types.ObjectId,
+      ref: "roles",
+    },
+    avatar: {
+      type: String,
     },
     phone: {
       type: String,

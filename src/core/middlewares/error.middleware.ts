@@ -4,7 +4,8 @@ import { StatusCodes } from "http-status-codes";
 import AppError from "../errors/AppError";
 import logger from "../../lib/logger";
 import { sendError } from "../../utils/response.util";
-import { Env } from "../../config/env.config";
+import { EMODE, Env } from "../../config/env.config";
+import ValidationError from "../errors/ValidationError";
 
 const errorHandler = (
   err: any,
@@ -21,7 +22,7 @@ const errorHandler = (
 
   logger.error(`${req.method} ${req.originalUrl} - ${status} - ${message}`);
 
-  if (Env.NODE_ENV === "dev") {
+  if (Env.NODE_ENV === EMODE.DEV) {
     sendError({
       res,
       message,
@@ -29,7 +30,12 @@ const errorHandler = (
       error: err instanceof AppError ? err.errors : err.stack,
     });
   } else {
-    sendError({ res, message, statusCode: status });
+    sendError({
+      res,
+      message,
+      statusCode: status,
+      error: err instanceof ValidationError ? err.errors : null,
+    });
   }
 };
 
